@@ -1,0 +1,3 @@
+[install]
+# Limit concurrent registry connections to avoid SYN-SENT socket stalls while keeping cold-start installs fast
+networkConcurrency = 12

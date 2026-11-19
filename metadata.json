@@ -1,0 +1,6 @@
+{
+  "name": "Clearspace",
+  "description": "Personal life management platform for daily scheduling, energy-aware planning, tasks, study tracking, calendar doodles, goals, finances, and reflection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,413 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private user profile and account metadata stored under users/{userId}.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "maxLength": 200 },
+        "bio": { "type": "string", "maxLength": 500 },
+        "avatarEmoji": { "type": "string", "maxLength": 16 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "createdAt", "updatedAt"]
+    },
+    "UserPreferences": {
+      "title": "UserPreferences",
+      "description": "User workspace preferences including time format, timezone, and day window.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "timeFormat": { "type": "string", "enum": ["12h", "24h"], "maxLength": 8 },
+        "timezone": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "dayStartHour": { "type": "number" },
+        "dayEndHour": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 12 },
+        "weekStartsOn": { "type": "string", "enum": ["sunday", "monday"], "maxLength": 12 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timeFormat", "timezone", "dayStartHour", "dayEndHour", "currency", "createdAt", "updatedAt"]
+    },
+    "ThemeSettings": {
+      "title": "ThemeSettings",
+      "description": "Visual theme and scrapbook customization settings.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "activeTheme": {
+          "type": "string",
+          "enum": ["strawberry-milk", "matcha-garden", "lavender-dreams", "peach-picnic", "seaside-diary", "moonlit-journal"],
+          "maxLength": 32
+        },
+        "customAccent": { "type": "string", "maxLength": 32 },
+        "decorativeStickers": { "type": "boolean" },
+        "compactMode": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "activeTheme", "decorativeStickers", "createdAt", "updatedAt"]
+    },
+    "Area": {
+      "title": "Area",
+      "description": "Custom life area/category with color and life-balance domain.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "color": { "type": "string", "minLength": 3, "maxLength": 32 },
+        "lifeDomain": { "type": "string", "enum": ["study", "career", "projects", "personal", "creative", "rest"], "maxLength": 24 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "name", "color", "lifeDomain", "createdAt", "updatedAt"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Personal task item with priority, area, due date, and completion tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "notes": { "type": "string", "maxLength": 2000 },
+        "areaId": { "type": "string", "maxLength": 128 },
+        "areaName": { "type": "string", "maxLength": 80 },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"], "maxLength": 16 },
+        "dueDate": { "type": "string", "maxLength": 32 },
+        "dueTime": { "type": "string", "maxLength": 16 },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "maxLength": 64 },
+        "backlog": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "priority", "completed", "createdAt", "updatedAt"]
+    },
+    "DailyScheduleBlock": {
+      "title": "DailyScheduleBlock",
+      "description": "Hour-by-hour time block inside My Day schedule.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "startTime": { "type": "string", "minLength": 4, "maxLength": 16 },
+        "endTime": { "type": "string", "minLength": 4, "maxLength": 16 },
+        "durationMinutes": { "type": "number" },
+        "category": { "type": "string", "maxLength": 80 },
+        "color": { "type": "string", "maxLength": 32 },
+        "lifeDomain": { "type": "string", "enum": ["study", "career", "projects", "personal", "creative", "rest"], "maxLength": 24 },
+        "notes": { "type": "string", "maxLength": 1500 },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "maxLength": 64 },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"], "maxLength": 16 },
+        "isBreak": { "type": "boolean" },
+        "isUnexpected": { "type": "boolean" },
+        "actualDurationMinutes": { "type": "number" },
+        "reminderMinutes": { "type": "number" },
+        "linkedTaskId": { "type": "string", "maxLength": 128 },
+        "linkedStudyId": { "type": "string", "maxLength": 128 },
+        "recurringWeekdays": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "title", "startTime", "endTime", "durationMinutes", "category", "color", "completed", "priority", "isBreak", "createdAt", "updatedAt"]
+    },
+    "DailyTemplate": {
+      "title": "DailyTemplate",
+      "description": "Reusable daily schedule template.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "blocks": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "name", "blocks", "createdAt", "updatedAt"]
+    },
+    "StudySchedule": {
+      "title": "StudySchedule",
+      "description": "Editable study schedule row with topic checklist and progress tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "subject": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "moduleName": { "type": "string", "maxLength": 160 },
+        "targetDate": { "type": "string", "maxLength": 32 },
+        "topics": { "type": "array" },
+        "notes": { "type": "string", "maxLength": 2000 },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "subject", "topics", "completed", "createdAt", "updatedAt"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "Scheduled calendar event for a given date.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "time": { "type": "string", "maxLength": 16 },
+        "category": { "type": "string", "maxLength": 80 },
+        "color": { "type": "string", "maxLength": 32 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "title", "completed", "createdAt", "updatedAt"]
+    },
+    "CalendarMarker": {
+      "title": "CalendarMarker",
+      "description": "Day-level custom emoji, label, and persistent doodle strokes.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "emoji": { "type": "string", "maxLength": 16 },
+        "label": { "type": "string", "maxLength": 120 },
+        "color": { "type": "string", "maxLength": 32 },
+        "doodleStrokes": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "createdAt", "updatedAt"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "Long-term personal goal with milestones checklist and completion history.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 1500 },
+        "category": { "type": "string", "maxLength": 80 },
+        "targetDate": { "type": "string", "maxLength": 32 },
+        "milestones": { "type": "array" },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "milestones", "completed", "createdAt", "updatedAt"]
+    },
+    "JournalEntry": {
+      "title": "JournalEntry",
+      "description": "Personal journal entry with mood and date history.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "content": { "type": "string", "minLength": 1, "maxLength": 10000 },
+        "mood": { "type": "string", "maxLength": 32 },
+        "tags": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "title", "content", "mood", "createdAt", "updatedAt"]
+    },
+    "PulseCheck": {
+      "title": "PulseCheck",
+      "description": "Morning, afternoon, or evening energy/mood/stress/motivation check-in.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "period": { "type": "string", "enum": ["morning", "afternoon", "evening"], "maxLength": 16 },
+        "mood": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "energy": { "type": "number" },
+        "stress": { "type": "number" },
+        "motivation": { "type": "number" },
+        "note": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "period", "mood", "energy", "stress", "motivation", "createdAt", "updatedAt"]
+    },
+    "FocusSession": {
+      "title": "FocusSession",
+      "description": "Completed Pomodoro or deep focus session log.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "taskTitle": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "durationMinutes": { "type": "number" },
+        "mode": { "type": "string", "enum": ["focus", "short-break", "long-break"], "maxLength": 24 },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "completedAt": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "taskTitle", "durationMinutes", "mode", "date", "completedAt", "createdAt", "updatedAt"]
+    },
+    "MoneyRecord": {
+      "title": "MoneyRecord",
+      "description": "Income or expense transaction record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "paymentMethod": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "amount", "category", "paymentMethod", "date", "createdAt", "updatedAt"]
+    },
+    "MonthlyReview": {
+      "title": "MonthlyReview",
+      "description": "Monthly life review reflection and highlights.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "monthKey": { "type": "string", "minLength": 6, "maxLength": 12 },
+        "reflection": { "type": "string", "maxLength": 5000 },
+        "wins": { "type": "string", "maxLength": 2000 },
+        "lessons": { "type": "string", "maxLength": 2000 },
+        "focusNextMonth": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "monthKey", "reflection", "createdAt", "updatedAt"]
+    },
+    "WeeklyReset": {
+      "title": "WeeklyReset",
+      "description": "Guided weekly review and suggested plan adjustments.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "weekKey": { "type": "string", "minLength": 6, "maxLength": 16 },
+        "wentWell": { "type": "string", "maxLength": 3000 },
+        "feltDifficult": { "type": "string", "maxLength": 3000 },
+        "postponedNotes": { "type": "string", "maxLength": 2000 },
+        "nextWeekGoals": { "type": "string", "maxLength": 2000 },
+        "removedFromPlan": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "weekKey", "wentWell", "createdAt", "updatedAt"]
+    },
+    "LifeTimelineItem": {
+      "title": "LifeTimelineItem",
+      "description": "Chronological milestone, completion, or highlight event on the personal Life Timeline.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "date": { "type": "string", "minLength": 8, "maxLength": 16 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "category": { "type": "string", "maxLength": 80 },
+        "sourceType": { "type": "string", "enum": ["task", "goal", "study", "journal", "calendar", "schedule", "manual"], "maxLength": 24 },
+        "sourceId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "title", "category", "sourceType", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile document scoped to authenticated owner."
+    },
+    "/users/{userId}/preferences/{prefId}": {
+      "schema": { "$ref": "#/entities/UserPreferences" },
+      "description": "User workspace preferences (timezone, 12h/24h, day hours)."
+    },
+    "/users/{userId}/themeSettings/{themeId}": {
+      "schema": { "$ref": "#/entities/ThemeSettings" },
+      "description": "Active theme and scrapbook decoration preferences."
+    },
+    "/users/{userId}/areas/{areaId}": {
+      "schema": { "$ref": "#/entities/Area" },
+      "description": "Custom life areas and colors."
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/Task" },
+      "description": "User tasks and backlog items."
+    },
+    "/users/{userId}/dailySchedules/{blockId}": {
+      "schema": { "$ref": "#/entities/DailyScheduleBlock" },
+      "description": "My Day time blocks."
+    },
+    "/users/{userId}/dailyTemplates/{templateId}": {
+      "schema": { "$ref": "#/entities/DailyTemplate" },
+      "description": "Reusable My Day templates."
+    },
+    "/users/{userId}/studySchedules/{studyId}": {
+      "schema": { "$ref": "#/entities/StudySchedule" },
+      "description": "Study schedule rows and topic checklists."
+    },
+    "/users/{userId}/calendarEvents/{eventId}": {
+      "schema": { "$ref": "#/entities/CalendarEvent" },
+      "description": "Calendar events."
+    },
+    "/users/{userId}/calendarMarkers/{markerId}": {
+      "schema": { "$ref": "#/entities/CalendarMarker" },
+      "description": "Calendar emoji markers, labels, and doodle strokes."
+    },
+    "/users/{userId}/goals/{goalId}": {
+      "schema": { "$ref": "#/entities/Goal" },
+      "description": "Goals and milestone checklists."
+    },
+    "/users/{userId}/journalEntries/{entryId}": {
+      "schema": { "$ref": "#/entities/JournalEntry" },
+      "description": "Personal journal entries."
+    },
+    "/users/{userId}/pulseChecks/{checkId}": {
+      "schema": { "$ref": "#/entities/PulseCheck" },
+      "description": "Daily morning, afternoon, and evening energy/mood check-ins."
+    },
+    "/users/{userId}/focusSessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/FocusSession" },
+      "description": "Completed Focus Room Pomodoro sessions."
+    },
+    "/users/{userId}/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/MoneyRecord" },
+      "description": "Expense records."
+    },
+    "/users/{userId}/incomes/{incomeId}": {
+      "schema": { "$ref": "#/entities/MoneyRecord" },
+      "description": "Income records."
+    },
+    "/users/{userId}/monthlyReviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/MonthlyReview" },
+      "description": "Monthly life review reflections."
+    },
+    "/users/{userId}/weeklyResets/{resetId}": {
+      "schema": { "$ref": "#/entities/WeeklyReset" },
+      "description": "Weekly reset guided reviews."
+    },
+    "/users/{userId}/lifeTimeline/{itemId}": {
+      "schema": { "$ref": "#/entities/LifeTimelineItem" },
+      "description": "Chronological life timeline progress history."
+    }
+  }
+}

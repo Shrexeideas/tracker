@@ -1,0 +1,276 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --cs-bg: #fdf8f9;
+  --cs-bg-secondary: #f8eaee;
+  --cs-surface: #ffffff;
+  --cs-surface-muted: #f7eef1;
+  --cs-border: #edd9df;
+  --cs-text: #2e2026;
+  --cs-text-muted: #765e67;
+  --cs-accent: #c94d6d;
+  --cs-accent-secondary: #7b68a6;
+  --cs-accent-soft: #fce8ee;
+  --cs-accent-ink: #ffffff;
+  --cs-success: #2e7d5b;
+  --cs-success-soft: rgba(46, 125, 91, 0.12);
+  --cs-warning: #c7772e;
+  --cs-warning-soft: rgba(199, 119, 46, 0.12);
+  --cs-danger: #c83e4d;
+  --cs-danger-soft: rgba(200, 62, 77, 0.12);
+  --cs-washi: rgba(242, 181, 198, 0.45);
+  --cs-shadow: 0 4px 20px -6px rgba(68, 35, 48, 0.08);
+  --cs-sidebar-bg: var(--cs-surface);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --cs-font-size-base: 15px;
+  --cs-weight-heading: 600;
+  --cs-weight-body: 400;
+  --cs-radius-card: 1.5rem;
+  --cs-radius-control: 0.75rem;
+  --cs-radius-sm: 0.5rem;
+  --cs-card-pad: 1.5rem;
+  --cs-section-gap: 1.5rem;
+  --cs-border-width: 1px;
+  --cs-border-style: solid;
+  --cs-bg-image: none;
+  --cs-pattern-image: none;
+  --cs-pattern-size: auto;
+  --cs-transition-ms: 180ms;
+}
+
+html {
+  font-size: var(--cs-font-size-base);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: var(--cs-weight-body);
+  background-color: var(--cs-bg);
+  color: var(--cs-text);
+  transition: background-color var(--cs-transition-ms) ease, color var(--cs-transition-ms) ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cs-app-shell {
+  position: relative;
+  background-color: var(--cs-bg);
+  background-image: var(--cs-pattern-image), var(--cs-bg-image);
+  background-size: var(--cs-pattern-size), cover;
+  color: var(--cs-text);
+}
+
+/* Optional lightweight texture overlays (zero external assets) */
+[data-cs-texture="paper"] .cs-app-shell::before,
+.cs-preview-surface[data-cs-texture="paper"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.25;
+  background-image: radial-gradient(rgba(128, 128, 128, 0.09) 1px, transparent 0);
+  background-size: 16px 16px;
+}
+
+[data-cs-texture="noise"] .cs-app-shell::before,
+.cs-preview-surface[data-cs-texture="noise"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: radial-gradient(rgba(140, 140, 140, 0.15) 0.7px, transparent 0);
+  background-size: 6px 6px;
+}
+
+[data-cs-texture="linen"] .cs-app-shell::before,
+.cs-preview-surface[data-cs-texture="linen"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(128, 128, 128, 0.05) 0, rgba(128, 128, 128, 0.05) 1px, transparent 1px, transparent 8px),
+    repeating-linear-gradient(90deg, rgba(128, 128, 128, 0.05) 0, rgba(128, 128, 128, 0.05) 1px, transparent 1px, transparent 8px);
+}
+
+.cs-app-shell > * {
+  z-index: 1;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: var(--cs-weight-heading);
+}
+
+.font-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.cs-sidebar {
+  z-index: 20;
+  background-color: var(--cs-sidebar-bg);
+  border-color: var(--cs-border);
+  border-right-width: var(--cs-border-width);
+  border-right-style: var(--cs-border-style);
+  transition: background-color var(--cs-transition-ms) ease, border-color var(--cs-transition-ms) ease;
+}
+
+[data-cs-sidebar="glass"] .cs-sidebar {
+  backdrop-filter: blur(12px);
+}
+
+.cs-card {
+  background-color: var(--cs-surface);
+  border-width: var(--cs-border-width);
+  border-style: var(--cs-border-style);
+  border-color: var(--cs-border);
+  border-radius: var(--cs-radius-card);
+  box-shadow: var(--cs-shadow);
+  transition:
+    background-color var(--cs-transition-ms) ease,
+    border-color var(--cs-transition-ms) ease,
+    border-radius var(--cs-transition-ms) ease,
+    transform var(--cs-transition-ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-cs-density="compact"] .cs-card {
+  padding: 1.125rem;
+}
+
+.cs-surface-muted {
+  background-color: var(--cs-surface-muted);
+  border-width: var(--cs-border-width);
+  border-style: var(--cs-border-style);
+  border-color: var(--cs-border);
+  border-radius: var(--cs-radius-control);
+}
+
+.cs-washi-tape {
+  background: var(--cs-washi);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  border-radius: var(--cs-radius-sm);
+}
+
+[data-cs-decorations="none"] .cs-washi-tape {
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  padding: 0;
+  transform: none;
+  color: var(--cs-text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+[data-cs-decorations="minimal"] .cs-washi-tape {
+  background: var(--cs-accent-soft);
+  color: var(--cs-accent);
+  backdrop-filter: none;
+  box-shadow: none;
+  transform: none;
+}
+
+.cs-btn-primary {
+  background-color: var(--cs-accent);
+  color: var(--cs-accent-ink);
+  border-radius: var(--cs-radius-control);
+  transition:
+    opacity var(--cs-transition-ms) ease,
+    transform var(--cs-transition-ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cs-btn-primary:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.cs-btn-primary:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+[data-cs-motion="playful"] .cs-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+[data-cs-motion="none"] .cs-btn-primary:active:not(:disabled),
+[data-cs-motion="none"] .cs-btn-primary:hover:not(:disabled) {
+  transform: none;
+}
+
+.cs-btn-secondary {
+  background-color: var(--cs-accent-secondary);
+  color: #ffffff;
+  border-radius: var(--cs-radius-control);
+  transition: opacity var(--cs-transition-ms) ease;
+}
+
+.cs-input {
+  background-color: var(--cs-surface);
+  border-width: var(--cs-border-width);
+  border-style: var(--cs-border-style);
+  border-color: var(--cs-border);
+  border-radius: var(--cs-radius-control);
+  color: var(--cs-text);
+}
+
+.cs-input::placeholder {
+  color: var(--cs-text-muted);
+  opacity: 0.72;
+}
+
+.cs-input:focus {
+  outline: 2px solid var(--cs-accent);
+  outline-offset: 1px;
+}
+
+.cs-status-success {
+  color: var(--cs-success);
+  background-color: var(--cs-success-soft);
+  border: 1px solid var(--cs-success);
+}
+
+.cs-status-warning {
+  color: var(--cs-warning);
+  background-color: var(--cs-warning-soft);
+  border: 1px solid var(--cs-warning);
+}
+
+.cs-status-danger {
+  color: var(--cs-danger);
+  background-color: var(--cs-danger-soft);
+  border: 1px solid var(--cs-danger);
+}
+
+@keyframes cs-pop-check {
+  0% { transform: scale(0.85); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.animate-cs-check {
+  animation: cs-pop-check 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-cs-motion="none"] *,
+[data-cs-motion="none"] *::before,
+[data-cs-motion="none"] *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
